@@ -1,0 +1,3 @@
+URI: mongodb+srv://vyasvivek361_db_user:cdf3vWvnMdRa6K6M@skillfirst-cluster.bjjfq5o.mongodb.net/skillfirst
+Connected!
+Users count: 5

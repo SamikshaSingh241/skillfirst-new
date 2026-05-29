@@ -1,0 +1,51 @@
+const users = [
+  {
+    id: 1,
+    name: "Rahul Sharma",
+    email: "rahul@test.com",
+    password: "1234",
+    role: "candidate",
+    verified: true,
+    skillScore: 75,
+    experience: "2 Years – Web Dev",
+    scoreHistory: [60, 75],
+  },
+  {
+    id: 4,
+    name: "Priya Patel",
+    email: "priya@test.com",
+    password: "1234",
+    role: "candidate",
+    verified: false,
+    skillScore: 92,
+    experience: "4 Years – Data Science",
+    scoreHistory: [85, 92],
+  },
+  {
+    id: 5,
+    name: "Arjun Singh",
+    email: "arjun@test.com",
+    password: "1234",
+    role: "candidate",
+    verified: true,
+    skillScore: 88,
+    experience: "3 Years – Full Stack",
+    scoreHistory: [70, 80, 88],
+  },
+  {
+    id: 2,
+    name: "Admin User",
+    email: "admin@test.com",
+    password: "1234",
+    role: "admin",
+  },
+  {
+    id: 3,
+    name: "Recruiter User",
+    email: "hr@test.com",
+    password: "1234",
+    role: "recruiter",
+  },
+];
+
+export default users;

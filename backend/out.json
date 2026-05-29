@@ -1,0 +1,103 @@
+[
+  {
+    "_id": "69d22acb0d5cb7d027e4c46c",
+    "name": "Rahul Sharma",
+    "email": "rahul@test.com",
+    "password": "1234",
+    "role": "candidate",
+    "verified": true,
+    "skillScore": 75,
+    "experience": "2 Years – Web Dev",
+    "scoreHistory": [
+      60,
+      75
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "69d22acb0d5cb7d027e4c46d",
+    "name": "Priya Patel",
+    "email": "priya@test.com",
+    "password": "1234",
+    "role": "candidate",
+    "verified": false,
+    "skillScore": 92,
+    "experience": "4 Years – Data Science",
+    "scoreHistory": [
+      85,
+      92
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "69d22acb0d5cb7d027e4c46e",
+    "name": "Arjun Singh",
+    "email": "arjun@test.com",
+    "password": "1234",
+    "role": "candidate",
+    "verified": true,
+    "skillScore": 88,
+    "experience": "3 Years – Full Stack",
+    "scoreHistory": [
+      70,
+      80,
+      88
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "69d22acb0d5cb7d027e4c46f",
+    "name": "Admin User",
+    "email": "admin@test.com",
+    "password": "1234",
+    "role": "admin",
+    "verified": false,
+    "scoreHistory": [],
+    "__v": 0
+  },
+  {
+    "_id": "69d22acb0d5cb7d027e4c470",
+    "name": "Recruiter User",
+    "email": "hr@test.com",
+    "password": "1234",
+    "role": "recruiter",
+    "verified": false,
+    "scoreHistory": [],
+    "__v": 0
+  },
+  {
+    "_id": "69d22e6b466406e4ef932d1d",
+    "name": "vivek vyas",
+    "email": "vivekvyas533@gmail.com",
+    "password": "$2b$10$hjUuO9tFKKjgqJjwD.MnE.XWpleT6nShb4hNBbb.G69dz/3zP9U5S",
+    "role": "candidate",
+    "verified": false,
+    "skillScore": 0,
+    "scoreHistory": [],
+    "__v": 0
+  },
+  {
+    "_id": "69d238e4728bc0c3ff3ec3f4",
+    "name": "vishnu",
+    "email": "vishnu37@gmail.com",
+    "password": "$2b$10$Lp.7yEDrCbg8Kes40hR/AOc4QDNAI24s09NoSzNFcNyYQ0FFbJqya",
+    "role": "candidate",
+    "verified": false,
+    "skillScore": 0,
+    "scoreHistory": [],
+    "__v": 0
+  },
+  {
+    "_id": "69d27aeb9abb26a98cc8b3bd",
+    "name": "samiksha singh",
+    "email": "samikshasingh2005@gmail.com",
+    "password": "$2b$10$jf0ywzR/poNaTEP/hiZNbeYdXHWbaz9hLuztmCqQpCaKVfWQhqKBC",
+    "role": "candidate",
+    "verified": false,
+    "skillScore": 25,
+    "scoreHistory": [
+      25
+    ],
+    "__v": 0
+  }
+]

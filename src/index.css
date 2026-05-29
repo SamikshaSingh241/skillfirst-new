@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  --color-neon-pink: #d946ef;
+  --color-neon-purple: #8b5cf6;
+  --color-neon-blue: #3b82f6;
+  --color-dark-bg: #05050f;
+  --color-card-bg: #0b0f19;
+}
+
+@custom-variant dark (&:is(.dark, .dark *));
+
+/* Basic Button Animation Requested by User */
+@keyframes gradient-revolve {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@utility btn-revolve {
+  background: linear-gradient(270deg, #5e4a8f, #b39db3, #c5c5e8, #b39db3, #5e4a8f);
+  background-size: 300% 300%;
+  animation: gradient-revolve 6s ease infinite;
+  color: white;
+}
+
+@utility text-revolve-dark {
+  background: linear-gradient(270deg, #4a3485, #5e4a8f, #7864b3, #5e4a8f, #4a3485);
+  background-size: 300% 300%;
+  animation: gradient-revolve 6s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Global Styles */
+body {
+  @apply bg-slate-50 text-black transition-colors duration-300;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-[10px];
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400;
+}
