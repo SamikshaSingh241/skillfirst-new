@@ -1,85 +1,120 @@
 @import "tailwindcss";
 
 @theme {
-  --color-neon-pink: #10b981; /* emerald-500 */
-  --color-neon-purple: #34d399; /* emerald-400 */
-  --color-neon-blue: #059669; /* emerald-600 */
-  --color-dark-bg: #050f05;
-  --color-card-bg: #0a1910;
+  --color-neon-pink: #10b981;
+  --color-neon-purple: #34d399;
+  --color-neon-blue: #06b6d4;
+  --color-dark-bg: #080c14;
+  --color-card-bg: #0d121f;
 }
 
 @custom-variant dark (&:is(.dark, .dark *));
 
-/* Basic Button Animation Requested by User */
+/* Smooth AI Glowing Revolving Animations */
 @keyframes gradient-revolve {
   0% {
     background-position: 0% 50%;
   }
-
   50% {
     background-position: 100% 50%;
   }
-
   100% {
     background-position: 0% 50%;
   }
 }
 
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
 @utility btn-revolve {
-  background: linear-gradient(270deg, #065f46, #10b981, #6ee7b7, #10b981, #065f46);
-  background-size: 300% 300%;
+  background: linear-gradient(135deg, #059669 0%, #10b981 50%, #06b6d4 100%);
+  background-size: 200% 200%;
   animation: gradient-revolve 6s ease infinite;
-  color: white;
+  color: #ffffff;
+  box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.35), 0 0 15px -1px rgba(6, 182, 212, 0.2);
 }
 
 @utility text-revolve-dark {
-  background: linear-gradient(270deg, #064e3b, #065f46, #047857, #065f46, #064e3b);
+  background: linear-gradient(270deg, #10b981, #34d399, #38bdf8, #34d399, #10b981);
   background-size: 300% 300%;
-  animation: gradient-revolve 6s ease infinite;
+  animation: gradient-revolve 8s ease infinite;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
 }
 
-/* Global Styles */
+/* Global Styles - Sleek Modern Dark Aesthetic */
 body {
-  @apply bg-slate-900 text-white transition-colors duration-300;
+  background-color: #080c14;
+  color: #f8fafc;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  background-image: 
+    radial-gradient(at 10% 10%, rgba(16, 185, 129, 0.04) 0px, transparent 50%),
+    radial-gradient(at 90% 90%, rgba(6, 182, 212, 0.04) 0px, transparent 50%);
 }
 
-/* Custom scrollbar */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-slate-800;
+  background: #0b0f19;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-600 rounded-[10px];
+  background: #1e293b;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-500;
+  background: #334155;
 }
 
+/* AI-Inspired Layered Shadows and Glass Container Styles */
 .neon-card {
-  background-color: #050f05;
-  border: 1px solid rgba(16, 185, 129, 0.2); /* Emerald border */
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.75) 0%, rgba(11, 16, 28, 0.88) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 
+    0 10px 30px -5px rgba(0, 0, 0, 0.6),
+    0 0 25px -4px rgba(16, 185, 129, 0.08),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.neon-card:hover {
+  border-color: rgba(52, 211, 153, 0.25);
+  box-shadow: 
+    0 16px 36px -6px rgba(0, 0, 0, 0.75),
+    0 0 30px -2px rgba(16, 185, 129, 0.16),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.12);
+}
+
 .dark .neon-card {
-  background-color: #050f05;
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.75) 0%, rgba(11, 16, 28, 0.88) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 
+    0 10px 30px -5px rgba(0, 0, 0, 0.6),
+    0 0 25px -4px rgba(16, 185, 129, 0.08),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .neon-text-gradient {
-  background: linear-gradient(to right, #34d399, #10b981);
+  background: linear-gradient(135deg, #34d399 0%, #10b981 50%, #38bdf8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -87,5 +122,6 @@ body {
 }
 
 .neon-bg-gradient {
-  background: linear-gradient(to right, #34d399, #10b981);
+  background: linear-gradient(135deg, #059669 0%, #10b981 50%, #06b6d4 100%);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
 }

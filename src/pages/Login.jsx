@@ -32,7 +32,6 @@ export default function Login() {
 
     try {
       const user = await login(email.trim(), password.trim());
-      // Small artificially delay just for the UI feeling as previously styled
       setTimeout(() => {
         navigate(rolePathMap[user.role] || "/", { replace: true });
       }, 100);
@@ -43,18 +42,18 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden bg-slate-50 dark:bg-[#05050f] text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden bg-[#080c14] text-slate-100 transition-colors duration-300">
 
-      {/* Decorative Orbs */}
-      <div className="absolute top-[10%] left-[20%] w-[30vw] h-[30vw] rounded-full bg-fuchsia-600/10 dark:bg-fuchsia-600/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[10%] right-[20%] w-[30vw] h-[30vw] rounded-full bg-violet-600/10 dark:bg-violet-600/10 blur-[150px] pointer-events-none" />
+      {/* Futuristic Subtle Ambient Glows */}
+      <div className="absolute top-[10%] left-[20%] w-[35vw] h-[35vw] rounded-full bg-emerald-600/10 blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-[10%] right-[20%] w-[35vw] h-[35vw] rounded-full bg-cyan-600/10 blur-[160px] pointer-events-none" />
 
       <motion.button
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
         onClick={() => navigate("/")}
-        className="absolute top-8 left-8 flex items-center gap-2 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white font-medium transition-colors z-20"
+        className="absolute top-8 left-8 flex items-center gap-2 text-slate-400 hover:text-white font-medium transition-colors z-20"
       >
         <FaArrowLeft /> Back to Home
       </motion.button>
@@ -65,26 +64,26 @@ export default function Login() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="w-full max-w-md relative z-10"
       >
-        <div className="neon-card rounded-[2rem] p-10 md:p-12">
+        <div className="neon-card rounded-[2rem] p-10 md:p-12 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6),0_0_30px_rgba(16,185,129,0.08)]">
 
           <div className="text-center mb-10">
-            <h2 className="text-4xl font-black mb-3 tracking-tight text-slate-900 dark:text-white">
+            <h2 className="text-4xl font-black mb-3 tracking-tight text-white">
               Welcome Back
             </h2>
-            <p className="text-slate-500 dark:text-slate-400 font-medium">
+            <p className="text-slate-400 font-medium text-sm">
               Sign in to your SkillFirst account
             </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-1">
-              <label className="text-sm font-semibold text-slate-600 dark:text-slate-300 ml-1">Email Address</label>
+              <label className="text-sm font-semibold text-slate-300 ml-1">Email Address</label>
               <div className="relative">
-                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
                   type="email"
                   placeholder="name@domain.com"
-                  className="w-full bg-slate-100 dark:bg-[#05050f] border border-slate-300 dark:border-white/10 focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-100 dark:focus:ring-fuchsia-500/10 rounded-2xl py-4 pl-11 pr-4 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 text-slate-900 dark:text-white font-medium shadow-inner"
+                  className="w-full bg-slate-900/80 border border-slate-700/60 focus:border-emerald-500/80 focus:ring-4 focus:ring-emerald-500/10 rounded-2xl py-4 pl-11 pr-4 outline-none transition-all placeholder:text-slate-500 text-white font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -93,13 +92,13 @@ export default function Login() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-sm font-semibold text-slate-600 dark:text-slate-300 ml-1">Password</label>
+              <label className="text-sm font-semibold text-slate-300 ml-1">Password</label>
               <div className="relative">
-                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className="w-full bg-slate-100 dark:bg-[#05050f] border border-slate-300 dark:border-white/10 focus:border-fuchsia-500 focus:ring-4 focus:ring-fuchsia-100 dark:focus:ring-fuchsia-500/10 rounded-2xl py-4 pl-11 pr-4 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 text-slate-900 dark:text-white font-medium shadow-inner"
+                  className="w-full bg-slate-900/80 border border-slate-700/60 focus:border-emerald-500/80 focus:ring-4 focus:ring-emerald-500/10 rounded-2xl py-4 pl-11 pr-4 outline-none transition-all placeholder:text-slate-500 text-white font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -115,7 +114,7 @@ export default function Login() {
                   exit={{ opacity: 0, height: 0, marginTop: 0 }}
                   className="overflow-hidden"
                 >
-                  <p className="flex items-center gap-2 text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900/50 p-4 rounded-2xl text-sm font-medium" role="alert">
+                  <p className="flex items-center gap-2 text-rose-400 bg-rose-950/40 border border-rose-900/50 p-4 rounded-2xl text-sm font-medium" role="alert">
                     <FaExclamationCircle className="shrink-0" />
                     {error}
                   </p>
@@ -126,7 +125,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full btn-revolve text-white py-4 rounded-2xl font-bold text-lg hover:opacity-90 shadow-md dark:shadow-none hover:shadow-lg dark:hover:shadow-[0_0_30px_rgba(217,70,239,0.4)] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-4 relative overflow-hidden"
+              className="w-full btn-revolve text-white py-4 rounded-2xl font-bold text-lg hover:opacity-95 shadow-[0_4px_25px_rgba(16,185,129,0.35)] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-4 relative overflow-hidden"
             >
               {isLoading ? (
                 <motion.div
@@ -143,11 +142,11 @@ export default function Login() {
             </button>
           </form>
 
-          <p className="mt-8 text-center text-slate-500 dark:text-slate-400 text-sm font-medium">
+          <p className="mt-8 text-center text-slate-400 text-sm font-medium">
             Don&apos;t have an account?{" "}
             <button
               onClick={() => navigate("/register")}
-              className="text-fuchsia-600 dark:text-fuchsia-400 hover:text-fuchsia-700 dark:hover:text-fuchsia-300 font-bold transition-colors"
+              className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors"
             >
               Sign up here.
             </button>

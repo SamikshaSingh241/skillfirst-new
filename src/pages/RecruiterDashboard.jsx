@@ -34,17 +34,17 @@ export default function RecruiterDashboard() {
   }));
 
   const getRankIcon = (index) => {
-    if (index === 0) return <FaTrophy className="text-yellow-500 dark:text-yellow-400 text-xl drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]" />;
-    if (index === 1) return <FaMedal className="text-slate-400 dark:text-slate-300 text-xl drop-shadow-[0_0_8px_rgba(203,213,225,0.5)]" />;
-    if (index === 2) return <FaMedal className="text-amber-600 dark:text-amber-500 text-xl drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]" />;
+    if (index === 0) return <FaTrophy className="text-yellow-400 text-xl drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]" />;
+    if (index === 1) return <FaMedal className="text-slate-300 text-xl drop-shadow-[0_0_8px_rgba(203,213,225,0.5)]" />;
+    if (index === 2) return <FaMedal className="text-amber-500 text-xl drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]" />;
     return <span className="text-slate-500 font-bold w-5 text-center">#{index + 1}</span>;
   };
 
   const getRankColor = (index) => {
-    if (index === 0) return "bg-yellow-100 dark:bg-yellow-500/10 border-yellow-300 dark:border-yellow-500/30";
-    if (index === 1) return "bg-slate-100 dark:bg-slate-300/10 border-slate-300 dark:border-slate-300/30";
-    if (index === 2) return "bg-amber-100 dark:bg-amber-600/10 border-amber-300 dark:border-amber-600/30";
-    return "bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10";
+    if (index === 0) return "bg-yellow-500/10 border-yellow-500/30";
+    if (index === 1) return "bg-slate-400/10 border-slate-400/30";
+    if (index === 2) return "bg-amber-500/10 border-amber-500/30";
+    return "bg-slate-900/60 border-white/10";
   };
 
   const handlePostJob = (e) => {
@@ -62,26 +62,34 @@ export default function RecruiterDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="space-y-8 text-slate-900 dark:text-slate-100"
+        className="space-y-8 text-slate-100"
       >
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
-              Company Dashboard
+            <h1 className="text-3xl font-black tracking-tight text-white">
+              Recruiter Dashboard
             </h1>
-            <p className="text-slate-600 dark:text-slate-400 mt-1">Manage jobs and review top talent analytics</p>
+            <p className="text-slate-400 mt-1 text-sm">Manage listings and review verified candidate benchmarks</p>
           </div>
 
-          <div className="flex bg-slate-100 dark:bg-[#0b0f19] p-1 rounded-xl border border-slate-300 dark:border-white/10 self-start md:self-auto">
+          <div className="flex bg-slate-900/80 p-1.5 rounded-2xl border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)] backdrop-blur-xl self-start md:self-auto">
             <button
               onClick={() => setActiveTab("overview")}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "overview" ? "bg-indigo-600 text-white shadow-md" : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white"}`}
+              className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                activeTab === "overview" 
+                  ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]" 
+                  : "text-slate-400 hover:text-white"
+              }`}
             >
               Overview
             </button>
             <button
               onClick={() => setActiveTab("jobs")}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === "jobs" ? "bg-indigo-600 text-white shadow-md" : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white"}`}
+              className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                activeTab === "jobs" 
+                  ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]" 
+                  : "text-slate-400 hover:text-white"
+              }`}
             >
               Job Postings
             </button>
@@ -92,82 +100,76 @@ export default function RecruiterDashboard() {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Ranking Section */}
             <motion.div
-              whileHover={{ y: -4 }}
-              className="lg:col-span-1 neon-card rounded-[2rem] p-8 relative overflow-hidden flex flex-col"
+              whileHover={{ y: -3 }}
+              className="lg:col-span-1 neon-card rounded-[2rem] p-8 relative overflow-hidden flex flex-col border border-white/10 shadow-[0_15px_35px_rgba(0,0,0,0.6),0_0_20px_rgba(16,185,129,0.06)]"
             >
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 to-orange-500" />
-              <h3 className="mb-6 text-slate-600 dark:text-slate-400 font-semibold uppercase tracking-wider text-sm flex items-center justify-between">
-                <span>Top Candidates</span>
-                <FaUsers className="text-slate-400 dark:text-slate-500" />
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-400" />
+              <h3 className="mb-6 text-slate-400 font-semibold uppercase tracking-wider text-xs flex items-center justify-between">
+                <span>Top Candidate Rankings</span>
+                <FaUsers className="text-slate-500" />
               </h3>
 
-              <div className="flex-1 space-y-3">
-                {sortedCandidates.map((c, index) => (
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    key={c.id}
-                    className={`flex items-center justify-between p-4 rounded-2xl border transition-all hover:shadow-md dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] cursor-default ${getRankColor(index)}`}
+              <div className="space-y-3 flex-1 overflow-y-auto max-h-[400px] pr-1">
+                {sortedCandidates.map((candidate, index) => (
+                  <div
+                    key={candidate.id}
+                    className={`flex items-center justify-between p-3.5 rounded-2xl border transition-all ${getRankColor(index)}`}
                   >
-                    <div className="flex items-center gap-4">
-                      <div className="flex-shrink-0 flex items-center justify-center w-8">
-                        {getRankIcon(index)}
-                      </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 flex justify-center">{getRankIcon(index)}</div>
                       <div>
-                        <p className="font-bold text-slate-900 dark:text-white">{c.name}</p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 capitalize">{c.experience || "No experience set"}</p>
+                        <p className="font-bold text-sm text-white">{candidate.name}</p>
+                        <p className="text-xs text-slate-400">{candidate.experience || "No title specified"}</p>
                       </div>
                     </div>
-                    <div className="flex flex-col items-end">
-                      <span className="font-black text-lg text-fuchsia-600 dark:text-fuchsia-400 drop-shadow-[0_0_5px_rgba(217,70,239,0.5)]">
-                        {c.skillScore}%
-                      </span>
-                      <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Score</span>
+                    <div className="text-right">
+                      <span className="font-black text-emerald-400 text-sm">{candidate.skillScore}%</span>
+                      <p className="text-[10px] text-slate-500 uppercase">Score</p>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
-                {sortedCandidates.length === 0 && (
-                  <div className="text-center py-10 text-slate-500 italic">No candidates available</div>
-                )}
               </div>
             </motion.div>
 
-            {/* Skill Comparison Graph */}
+            {/* Score Distribution Chart */}
             <motion.div
-              whileHover={{ y: -4 }}
-              className="lg:col-span-2 neon-card rounded-[2rem] p-8 relative overflow-hidden flex flex-col min-h-[400px]"
+              whileHover={{ y: -3 }}
+              className="lg:col-span-2 neon-card rounded-[2rem] p-8 relative overflow-hidden flex flex-col border border-white/10 shadow-[0_15px_35px_rgba(0,0,0,0.6),0_0_20px_rgba(16,185,129,0.06)]"
             >
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500" />
-              <h3 className="mb-6 text-slate-600 dark:text-slate-400 font-semibold uppercase tracking-wider text-sm flex justify-between items-center">
-                <span>Skill Comparison Overview</span>
-                <span className="bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500/30 px-3 py-1 rounded-full text-xs font-bold">{candidates.length} Total</span>
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-cyan-500" />
+              <h3 className="mb-6 text-slate-400 font-semibold uppercase tracking-wider text-xs">
+                Candidate Score Distribution
               </h3>
 
-              <div className="flex-1 w-full h-full pb-4">
+              <div className="flex-1 min-h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData} margin={{ top: 20, right: 30, left: -20, bottom: 5 }} barSize={30}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#cbd5e1" className="dark:stroke-[#1e293b]" />
+                  <BarChart data={chartData} margin={{ top: 20, right: 20, bottom: 20, left: -20 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.06)" />
                     <XAxis
                       dataKey="name"
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
+                      tick={{ fill: '#94a3b8', fontSize: 11 }}
                       dy={10}
                     />
                     <YAxis
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fill: '#64748b', fontSize: 12 }}
+                      tick={{ fill: '#94a3b8', fontSize: 11 }}
                     />
                     <Tooltip
-                      cursor={{ fill: 'rgba(255,255,255,0.05)' }}
-                      contentStyle={{ backgroundColor: '#ffffff', borderRadius: '1rem', border: '1px solid #e2e8f0', color: '#0f172a' }}
-                      itemStyle={{ color: '#0f172a' }}
+                      cursor={{ fill: 'rgba(255,255,255,0.02)' }}
+                      contentStyle={{ 
+                        backgroundColor: '#0d121f', 
+                        borderRadius: '1rem', 
+                        border: '1px solid rgba(255,255,255,0.1)', 
+                        color: '#ffffff',
+                        boxShadow: '0 10px 30px rgba(0,0,0,0.6)'
+                      }}
                     />
-                    <Bar dataKey="score" radius={[8, 8, 0, 0]} animationDuration={1500}>
+                    <Bar dataKey="score" radius={[8, 8, 0, 0]}>
                       {chartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={index % 2 === 0 ? '#3b82f6' : '#6366f1'} />
+                        <Cell key={`cell-${index}`} fill={index === 0 ? "#10b981" : "#059669"} />
                       ))}
                     </Bar>
                   </BarChart>
@@ -180,10 +182,10 @@ export default function RecruiterDashboard() {
         {activeTab === "jobs" && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Active Postings</h2>
+              <h2 className="text-xl font-bold text-white">Active Openings</h2>
               <button
                 onClick={() => setShowJobForm(!showJobForm)}
-                className="flex items-center gap-2 btn-revolve px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-[0_0_15px_rgba(79,70,229,0.3)]"
+                className="btn-revolve flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm shadow-[0_4px_20px_rgba(16,185,129,0.3)] transition-all"
               >
                 <FaPlus /> Post a Job
               </button>
@@ -191,77 +193,82 @@ export default function RecruiterDashboard() {
 
             <AnimatePresence>
               {showJobForm && (
-                <motion.div
+                <motion.form
                   initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
+                  animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="overflow-hidden"
+                  onSubmit={handlePostJob}
+                  className="neon-card p-6 rounded-2xl border border-white/10 space-y-4"
                 >
-                  <form onSubmit={handlePostJob} className="neon-card p-6 rounded-[2rem] space-y-4 mb-6 border border-indigo-200 dark:border-indigo-500/30">
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Create New Job Posting</h3>
-                    <div className="grid md:grid-cols-3 gap-4">
-                      <input
-                        required
-                        placeholder="Job Title (e.g., Frontend Dev)"
-                        className="bg-slate-50 dark:bg-[#05050f] border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:border-indigo-500 outline-none"
-                        value={newJob.title}
-                        onChange={e => setNewJob({ ...newJob, title: e.target.value })}
-                      />
-                      <input
-                        required
-                        placeholder="Department"
-                        className="bg-slate-50 dark:bg-[#05050f] border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:border-indigo-500 outline-none"
-                        value={newJob.department}
-                        onChange={e => setNewJob({ ...newJob, department: e.target.value })}
-                      />
-                      <select
-                        className="bg-slate-50 dark:bg-[#05050f] border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:border-indigo-500 outline-none"
-                        value={newJob.type}
-                        onChange={e => setNewJob({ ...newJob, type: e.target.value })}
-                      >
-                        <option>Full-time</option>
-                        <option>Part-time</option>
-                        <option>Contract</option>
-                      </select>
-                    </div>
-                    <div className="flex justify-end gap-3 mt-4">
-                      <button type="button" onClick={() => setShowJobForm(false)} className="px-4 py-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white font-medium">Cancel</button>
-                      <button type="submit" className="btn-revolve px-6 py-2 rounded-xl text-white font-bold hover:shadow-[0_0_20px_rgba(217,70,239,0.4)]">Publish Job</button>
-                    </div>
-                  </form>
-                </motion.div>
+                  <h3 className="font-bold text-white">New Job Details</h3>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <input
+                      type="text"
+                      placeholder="Job Title"
+                      required
+                      value={newJob.title}
+                      onChange={(e) => setNewJob({ ...newJob, title: e.target.value })}
+                      className="bg-slate-900/80 border border-slate-700/60 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 outline-none"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Department"
+                      required
+                      value={newJob.department}
+                      onChange={(e) => setNewJob({ ...newJob, department: e.target.value })}
+                      className="bg-slate-900/80 border border-slate-700/60 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 outline-none"
+                    />
+                    <select
+                      value={newJob.type}
+                      onChange={(e) => setNewJob({ ...newJob, type: e.target.value })}
+                      className="bg-slate-900/80 border border-slate-700/60 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-sm text-white outline-none"
+                    >
+                      <option value="Full-time">Full-time</option>
+                      <option value="Part-time">Part-time</option>
+                      <option value="Contract">Contract</option>
+                    </select>
+                  </div>
+                  <div className="flex justify-end gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setShowJobForm(false)}
+                      className="px-4 py-2 rounded-xl text-sm font-semibold text-slate-400 hover:text-white"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn-revolve px-5 py-2 rounded-xl text-sm font-bold shadow-md"
+                    >
+                      Publish Role
+                    </button>
+                  </div>
+                </motion.form>
               )}
             </AnimatePresence>
 
-            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 gap-6">
               {jobs.map((job) => (
-                <motion.div
+                <div
                   key={job.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="neon-card rounded-2xl p-6 group cursor-pointer hover:-translate-y-1 transition-all"
+                  className="neon-card rounded-2xl p-6 border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5),0_0_20px_rgba(16,185,129,0.05)] hover:-translate-y-1 transition-transform"
                 >
                   <div className="flex justify-between items-start mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl">
-                      <FaBriefcase />
+                    <div>
+                      <h3 className="font-bold text-lg text-white mb-1">{job.title}</h3>
+                      <p className="text-xs text-slate-400">{job.department} • {job.type}</p>
                     </div>
-                    <span className="bg-slate-100 dark:bg-white/5 border border-slate-300 dark:border-white/10 text-xs px-2 py-1 rounded-md text-slate-700 dark:text-slate-300">
-                      {job.type}
+                    <span className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs px-3 py-1 rounded-full font-bold">
+                      Active
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{job.title}</h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">{job.department}</p>
-
-                  <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex justify-between items-center">
-                    <div className="flex -space-x-2">
-                      {/* Mock applicant avatars */}
-                      <div className="w-8 h-8 rounded-full bg-indigo-500 border-2 border-white dark:border-[#0b0f19]"></div>
-                      <div className="w-8 h-8 rounded-full bg-violet-500 border-2 border-white dark:border-[#0b0f19]"></div>
-                      <div className="w-8 h-8 rounded-full bg-slate-300 dark:bg-slate-700 border-2 border-white dark:border-[#0b0f19] flex items-center justify-center text-[10px] font-bold text-slate-800 dark:text-white">+{job.applicants}</div>
-                    </div>
-                    <button className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 group-hover:text-indigo-500 dark:group-hover:text-indigo-300">View Applicants</button>
+                  <div className="flex justify-between items-center text-xs text-slate-400 border-t border-white/5 pt-4 mt-4">
+                    <span>{job.applicants} Applicants Screened</span>
+                    <button className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors">
+                      Review Talent &rarr;
+                    </button>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>

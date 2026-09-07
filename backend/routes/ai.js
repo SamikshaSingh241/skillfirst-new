@@ -1,63 +1,83 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const { PDFParse } = require('pdf-parse');
 const { GoogleGenAI } = require('@google/genai');
 
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ 
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
+});
 
-// Initialize Gemini client (ensure GEMINI_API_KEY is in .env)
+// Initialize Gemini client with API key from environment
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 router.post('/analyze-resume', upload.single('resume'), async (req, res) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ error: 'No resume file uploaded' });
+      return res.status(400).json({ error: 'No resume file uploaded. Please select a PDF file.' });
     }
 
-    const { targetRole } = req.body;
-    if (!targetRole) {
-      return res.status(400).json({ error: 'Please provide the target role you are preparing for.' });
-    }
+    const targetRole = (req.body.targetRole && req.body.targetRole.trim()) 
+      || (req.body.jobTitle && req.body.jobTitle.trim()) 
+      || "Software Developer";
 
     if (!process.env.GEMINI_API_KEY) {
-      return res.status(500).json({ error: 'GEMINI_API_KEY is missing from environment.' });
+      return res.status(500).json({ error: 'GEMINI_API_KEY is not configured in the backend environment.' });
     }
 
-    // Prompt for assessment generation based on both Resume and Target Role
-    const prompt = `
-      You are an expert technical recruiter and strict assessor. 
-      Attached is the candidate's resume (PDF). 
-      The candidate is applying and preparing for the role of: "${targetRole}".
-      
-      First, scan and analyze their resume. Then, based STRICTLY on their resume AND the target role of "${targetRole}", generate:
-      
-      1. Exactly 10 HIGHLY ADVANCED, expert-level multiple-choice questions to deeply test this candidate's proficiency. 
-         These must NOT be basic trivia. They must be medium-to-hard, scenario-based technical questions. It should be considerably hard even for freshers.
-      2. 10 EXTREMELY DIFFICULT open-ended technical and behavioral interview questions for verbal practice, focusing on edge cases, architecture, and advanced problem-solving related to the role and their resume.
-      
-      IMPORTANT: Return the output strictly as a JSON object with this shape:
-      {
-        "summary": "1 sentence summarizing their core strength based on the resume",
-        "questions": [
-          {
-            "id": 1,
-            "question": "Question text here?",
-            "options": ["Option A", "Option B", "Option C", "Option D"],
-            "answer": "Option B"
-          }
-        ],
-        "interviewQuestions": [
-          "1st open-ended verbal question",
-          "2nd open-ended verbal question",
-          "...",
-          "10th open-ended verbal question"
-        ]
-      }
-    `;
+    // 1. Extract text from PDF using PDFParse
+    let resumeText = "";
+    try {
+      const parser = new PDFParse({ data: req.file.buffer });
+      const parsed = await parser.getText();
+      resumeText = (parsed && parsed.text) ? parsed.text.trim() : "";
+    } catch (parseErr) {
+      console.warn("PDFParse text extraction note:", parseErr.message);
+    }
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: [
+    // 2. Build Gemini contents: text-based if extracted, or native PDF inlineData if extraction returned minimal text
+    const promptText = `
+You are an elite technical interviewer, hiring manager, and assessment designer.
+Target Role for this assessment: "${targetRole}"
+
+Candidate Resume Information:
+"""
+${resumeText ? resumeText.substring(0, 8000) : "Review the attached PDF document thoroughly."}
+"""
+
+Instructions:
+1. Deeply analyze the candidate's experience, technologies, and depth from their resume, aligned with the Target Role: "${targetRole}".
+2. Generate exactly 15 MEDIUM-TO-HARD difficulty level multiple-choice questions (MCQs).
+   - Difficulty standard: Considerably challenging even for freshers/juniors, requiring conceptual mastery, debugging intuition, system architecture understanding, and practical scenario-solving.
+   - Absolutely NO easy questions, trivia, or simple definition memorization.
+   - Every question must have exactly 4 plausible, high-quality options, and 1 clear correct answer.
+3. Generate 10 challenging technical & behavioral interview questions focusing on real-world architecture, trade-offs, and edge cases for verbal practice.
+
+You MUST respond strictly with a valid JSON object matching this schema without any markdown wrapping or extra text:
+{
+  "summary": "1-2 sentences summarizing the candidate's core strengths and technical readiness for ${targetRole}",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Clear scenario or technical problem statement here?",
+      "options": ["Option A", "Option B", "Option C", "Option D"],
+      "answer": "Option A"
+    }
+  ],
+  "interviewQuestions": [
+    "Challenging scenario question 1",
+    "Challenging scenario question 2"
+  ]
+}
+`;
+
+    let contents;
+    if (resumeText && resumeText.length > 50) {
+      contents = promptText;
+    } else {
+      // Fallback to inline PDF sending
+      contents = [
         {
           role: 'user',
           parts: [
@@ -67,101 +87,108 @@ router.post('/analyze-resume', upload.single('resume'), async (req, res) => {
                 mimeType: req.file.mimetype || 'application/pdf'
               }
             },
-            { text: prompt }
+            { text: promptText }
           ]
         }
-      ],
+      ];
+    }
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: contents,
       config: {
         responseMimeType: "application/json",
       }
     });
 
-    const aiText = response.text;
-    
-    let generatedAssessment;
-    try {
-      generatedAssessment = JSON.parse(aiText);
-    } catch (parseErr) {
-      console.error("AI JSON Parse Error:", aiText);
-      return res.status(500).json({ error: 'AI failed to generate a valid JSON assessment.' });
+    const aiText = response.text || "{}";
+    let cleaned = aiText.trim();
+    if (cleaned.startsWith("```json")) {
+      cleaned = cleaned.replace(/^```json/, "").replace(/```$/, "").trim();
+    } else if (cleaned.startsWith("```")) {
+      cleaned = cleaned.replace(/^```/, "").replace(/```$/, "").trim();
     }
 
-    res.json(generatedAssessment);
+    const jsonStart = cleaned.indexOf('{');
+    const jsonEnd = cleaned.lastIndexOf('}');
+    if (jsonStart !== -1 && jsonEnd !== -1) {
+      cleaned = cleaned.substring(jsonStart, jsonEnd + 1);
+    }
+
+    const assessment = JSON.parse(cleaned);
+    res.json(assessment);
 
   } catch (err) {
-    console.error('AI Route Error:', err);
-    res.status(500).json({ error: err.message || 'Something went wrong processing the resume.' });
+    console.error('Analyze Resume Error:', err);
+    res.status(500).json({ error: err.message || 'Failed to process resume and generate quiz.' });
   }
 });
 
 router.post('/generate-from-skills', async (req, res) => {
   try {
-    const { jobTitle, skills } = req.body;
+    const jobTitle = req.body.jobTitle?.trim() || "Software Developer";
+    const skills = req.body.skills?.trim() || "";
     
-    if (!jobTitle || !skills) {
-      return res.status(400).json({ error: 'Job title and skills are required.' });
+    if (!skills) {
+      return res.status(400).json({ error: 'Skills description is required.' });
     }
 
     if (!process.env.GEMINI_API_KEY) {
-      return res.status(500).json({ error: 'GEMINI_API_KEY is missing from environment.' });
+      return res.status(500).json({ error: 'GEMINI_API_KEY is not configured in the backend environment.' });
     }
 
-    const prompt = `
-      You are an expert technical recruiter and strict assessor. 
-      The candidate has the following profile:
-      Job Title/Role: ${jobTitle}
-      Key Skills/Experience: ${skills}
-      
-      Based entirely on these skills and the role context, generate:
-      1. exactly 10 HIGHLY ADVANCED, expert-level multiple-choice questions to deeply test this candidate's proficiency. These should not be basic trivia. They must be medium-to-hard, scenario-based technical questions. It should be considerably hard even for freshers.
-      2. 10 EXTREMELY DIFFICULT open-ended technical and behavioral interview questions for verbal practice, focusing on edge cases, architecture, and advanced problem-solving.
-      
-      IMPORTANT: Return the output strictly as a JSON object with this shape:
-      {
-        "summary": "1 sentence summarizing their core strength",
-        "questions": [
-          {
-            "id": 1,
-            "question": "Question text here?",
-            "options": ["Option A", "Option B", "Option C", "Option D"],
-            "answer": "Option B"
-          }
-        ],
-        "interviewQuestions": [
-          "1st open-ended verbal question",
-          "2nd open-ended verbal question",
-          "...",
-          "10th open-ended verbal question"
-        ]
-      }
-    `;
+    const promptText = `
+You are an elite technical interviewer and assessment designer.
+Target Role: "${jobTitle}"
+Key Skills & Experience: "${skills}"
+
+Generate a strictly MEDIUM-TO-HARD difficulty assessment:
+1. Exactly 15 challenging scenario-based multiple-choice questions (MCQs) testing deep knowledge, edge-cases, and debugging in ${jobTitle} / ${skills}. Considerably hard even for freshers. No easy trivia.
+2. 10 deep open-ended technical & behavioral interview questions for practice.
+
+Return STRICT JSON only:
+{
+  "summary": "Concise profile assessment for ${jobTitle}",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Question text?",
+      "options": ["Option A", "Option B", "Option C", "Option D"],
+      "answer": "Option A"
+    }
+  ],
+  "interviewQuestions": [
+    "Question 1",
+    "Question 2"
+  ]
+}
+`;
 
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
-      contents: prompt,
+      contents: promptText,
       config: {
         responseMimeType: "application/json",
       }
     });
 
-    const aiText = response.text;
-    
-    let generatedAssessment;
-    try {
-      generatedAssessment = JSON.parse(aiText);
-    } catch (parseErr) {
-      return res.status(500).json({ error: 'AI failed to generate a valid JSON assessment.' });
+    const aiText = response.text || "{}";
+    let cleaned = aiText.trim();
+    const jsonStart = cleaned.indexOf('{');
+    const jsonEnd = cleaned.lastIndexOf('}');
+    if (jsonStart !== -1 && jsonEnd !== -1) {
+      cleaned = cleaned.substring(jsonStart, jsonEnd + 1);
     }
 
-    res.json(generatedAssessment);
+    const assessment = JSON.parse(cleaned);
+    res.json(assessment);
 
   } catch (err) {
-    console.error('AI Route Error:', err);
-    res.status(500).json({ error: err.message || 'Something went wrong generating assessment.' });
+    console.error('Generate from skills Error:', err);
+    res.status(500).json({ error: err.message || 'Failed to generate assessment.' });
   }
 });
 
-// New Endpoint for Interview Speech Evaluation
 router.post('/evaluate-answer', async (req, res) => {
   try {
     const { question, answer } = req.body;
@@ -174,52 +201,48 @@ router.post('/evaluate-answer', async (req, res) => {
       return res.status(500).json({ error: 'GEMINI_API_KEY is missing from environment.' });
     }
 
-    const prompt = `
-      You are an expert HR Manager and Technical Interviewer.
-      The candidate was asked the following interview question:
-      "${question}"
-      
-      The candidate provided this spoken answer (transcribed):
-      "${answer}"
-      
-      Please evaluate their answer in an HR interview style. 
-      Analyze their speech/transcript for:
-      - Clarity and conciseness
-      - Technical accuracy (if applicable)
-      - STAR method usage (Situation, Task, Action, Result)
-      - Confidence (based on phrasing)
-      
-      Return a STRICT JSON response with this shape:
-      {
-        "score": 85, // integer out of 100
-        "feedback": "A short, constructive paragraph of feedback",
-        "strengths": ["Strength 1", "Strength 2"],
-        "improvements": ["Area to improve 1", "Area to improve 2"]
-      }
-    `;
+    const promptText = `
+You are an expert HR Manager and Senior Technical Interviewer.
+Interview Question: "${question}"
+Candidate's Spoken Answer: "${answer}"
+
+Evaluate the candidate's answer thoroughly for:
+1. Technical accuracy & depth
+2. Structure (STAR format - Situation, Task, Action, Result)
+3. Communication clarity, tone, and confidence
+4. Conciseness without rambling
+
+Return STRICT JSON only:
+{
+  "score": 82,
+  "feedback": "Constructive 2-3 sentence overall evaluation",
+  "strengths": ["Strength 1", "Strength 2"],
+  "improvements": ["Improvement point 1", "Improvement point 2"]
+}
+`;
 
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
-      contents: prompt,
+      contents: promptText,
       config: {
         responseMimeType: "application/json",
       }
     });
 
-    const aiText = response.text;
-    
-    let evaluation;
-    try {
-      evaluation = JSON.parse(aiText);
-    } catch (parseErr) {
-      return res.status(500).json({ error: 'AI failed to generate a valid JSON evaluation.' });
+    const aiText = response.text || "{}";
+    let cleaned = aiText.trim();
+    const jsonStart = cleaned.indexOf('{');
+    const jsonEnd = cleaned.lastIndexOf('}');
+    if (jsonStart !== -1 && jsonEnd !== -1) {
+      cleaned = cleaned.substring(jsonStart, jsonEnd + 1);
     }
 
+    const evaluation = JSON.parse(cleaned);
     res.json(evaluation);
 
   } catch (err) {
-    console.error('AI Route Error:', err);
-    res.status(500).json({ error: err.message || 'Something went wrong evaluating answer.' });
+    console.error('Evaluate Answer Error:', err);
+    res.status(500).json({ error: err.message || 'Failed to evaluate answer.' });
   }
 });
 

@@ -11,7 +11,7 @@ export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("candidate"); // Default to candidate
+  const [role, setRole] = useState("candidate");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,7 +40,6 @@ export default function Register() {
         role: role
       });
       
-      // Simulate slight delay for premium feeling
       setTimeout(() => {
         navigate(rolePathMap[user.role] || "/", { replace: true });
       }, 300);
@@ -51,18 +50,18 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden bg-slate-50 dark:bg-[#05050f] text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden bg-[#080c14] text-slate-100 transition-colors duration-300">
 
-      {/* Decorative Orbs */}
-      <div className="absolute top-[10%] left-[20%] w-[30vw] h-[30vw] rounded-full bg-emerald-600/10 dark:bg-emerald-600/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[10%] right-[20%] w-[30vw] h-[30vw] rounded-full bg-teal-600/10 dark:bg-teal-600/10 blur-[150px] pointer-events-none" />
+      {/* Futuristic Subtle Ambient Glows */}
+      <div className="absolute top-[10%] left-[20%] w-[35vw] h-[35vw] rounded-full bg-emerald-600/10 blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-[10%] right-[20%] w-[35vw] h-[35vw] rounded-full bg-cyan-600/10 blur-[160px] pointer-events-none" />
 
       <motion.button
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
         onClick={() => navigate("/")}
-        className="absolute top-8 left-8 flex items-center gap-2 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white font-medium transition-colors z-20"
+        className="absolute top-8 left-8 flex items-center gap-2 text-slate-400 hover:text-white font-medium transition-colors z-20"
       >
         <FaArrowLeft /> Back to Home
       </motion.button>
@@ -73,26 +72,26 @@ export default function Register() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="w-full max-w-md relative z-10"
       >
-        <div className="neon-card rounded-[2rem] p-10 md:p-12 border border-emerald-500/20">
+        <div className="neon-card rounded-[2rem] p-10 md:p-12 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6),0_0_30px_rgba(16,185,129,0.08)]">
 
           <div className="text-center mb-10">
-            <h2 className="text-4xl font-black mb-3 tracking-tight text-slate-900 dark:text-white">
+            <h2 className="text-4xl font-black mb-3 tracking-tight text-white">
               Create Account
             </h2>
-            <p className="text-slate-500 dark:text-slate-400 font-medium">
+            <p className="text-slate-400 font-medium text-sm">
               Join SkillFirst today!
             </p>
           </div>
 
           <form onSubmit={handleRegister} className="space-y-6">
             <div className="space-y-1">
-              <label className="text-sm font-semibold text-slate-600 dark:text-slate-300 ml-1">Full Name</label>
+              <label className="text-sm font-semibold text-slate-300 ml-1">Full Name</label>
               <div className="relative">
-                <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+                <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
                   type="text"
                   placeholder="John Doe"
-                  className="w-full bg-slate-100 dark:bg-[#05050f] border border-slate-300 dark:border-white/10 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 dark:focus:ring-emerald-500/10 rounded-2xl py-4 pl-11 pr-4 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 text-slate-900 dark:text-white font-medium shadow-inner"
+                  className="w-full bg-slate-900/80 border border-slate-700/60 focus:border-emerald-500/80 focus:ring-4 focus:ring-emerald-500/10 rounded-2xl py-4 pl-11 pr-4 outline-none transition-all placeholder:text-slate-500 text-white font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -101,13 +100,13 @@ export default function Register() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-sm font-semibold text-slate-600 dark:text-slate-300 ml-1">Email Address</label>
+              <label className="text-sm font-semibold text-slate-300 ml-1">Email Address</label>
               <div className="relative">
-                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
                   type="email"
                   placeholder="name@domain.com"
-                  className="w-full bg-slate-100 dark:bg-[#05050f] border border-slate-300 dark:border-white/10 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 dark:focus:ring-emerald-500/10 rounded-2xl py-4 pl-11 pr-4 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 text-slate-900 dark:text-white font-medium shadow-inner"
+                  className="w-full bg-slate-900/80 border border-slate-700/60 focus:border-emerald-500/80 focus:ring-4 focus:ring-emerald-500/10 rounded-2xl py-4 pl-11 pr-4 outline-none transition-all placeholder:text-slate-500 text-white font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -116,13 +115,13 @@ export default function Register() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-sm font-semibold text-slate-600 dark:text-slate-300 ml-1">Password</label>
+              <label className="text-sm font-semibold text-slate-300 ml-1">Password</label>
               <div className="relative">
-                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className="w-full bg-slate-100 dark:bg-[#05050f] border border-slate-300 dark:border-white/10 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 dark:focus:ring-emerald-500/10 rounded-2xl py-4 pl-11 pr-4 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 text-slate-900 dark:text-white font-medium shadow-inner"
+                  className="w-full bg-slate-900/80 border border-slate-700/60 focus:border-emerald-500/80 focus:ring-4 focus:ring-emerald-500/10 rounded-2xl py-4 pl-11 pr-4 outline-none transition-all placeholder:text-slate-500 text-white font-medium shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -131,15 +130,31 @@ export default function Register() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-sm font-semibold text-slate-600 dark:text-slate-300 ml-1">I am a...</label>
-              <select
-                className="w-full bg-slate-100 dark:bg-[#05050f] border border-slate-300 dark:border-white/10 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 dark:focus:ring-emerald-500/10 rounded-2xl py-4 px-4 outline-none transition-all text-slate-900 dark:text-white font-medium shadow-inner appearance-none"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-              >
-                <option value="candidate">Candidate (Looking for jobs)</option>
-                <option value="recruiter">Recruiter (Hiring talent)</option>
-              </select>
+              <label className="text-sm font-semibold text-slate-300 ml-1">I want to join as</label>
+              <div className="grid grid-cols-2 gap-3 mt-1">
+                <button
+                  type="button"
+                  onClick={() => setRole("candidate")}
+                  className={`py-3 rounded-xl font-bold text-sm border transition-all ${
+                    role === "candidate"
+                      ? "bg-emerald-500/15 border-emerald-500 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+                      : "bg-slate-900/60 border-slate-800 text-slate-400 hover:text-slate-200"
+                  }`}
+                >
+                  Candidate
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRole("recruiter")}
+                  className={`py-3 rounded-xl font-bold text-sm border transition-all ${
+                    role === "recruiter"
+                      ? "bg-emerald-500/15 border-emerald-500 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+                      : "bg-slate-900/60 border-slate-800 text-slate-400 hover:text-slate-200"
+                  }`}
+                >
+                  Recruiter
+                </button>
+              </div>
             </div>
 
             <AnimatePresence>
@@ -150,7 +165,7 @@ export default function Register() {
                   exit={{ opacity: 0, height: 0, marginTop: 0 }}
                   className="overflow-hidden"
                 >
-                  <p className="flex items-center gap-2 text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900/50 p-4 rounded-2xl text-sm font-medium" role="alert">
+                  <p className="flex items-center gap-2 text-rose-400 bg-rose-950/40 border border-rose-900/50 p-4 rounded-2xl text-sm font-medium" role="alert">
                     <FaExclamationCircle className="shrink-0" />
                     {error}
                   </p>
@@ -161,7 +176,7 @@ export default function Register() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-4 rounded-2xl font-bold text-lg hover:opacity-90 shadow-md dark:shadow-none hover:shadow-lg dark:hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-4 relative overflow-hidden"
+              className="w-full btn-revolve text-white py-4 rounded-2xl font-bold text-lg hover:opacity-95 shadow-[0_4px_25px_rgba(16,185,129,0.35)] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-4 relative overflow-hidden"
             >
               {isLoading ? (
                 <motion.div
@@ -170,7 +185,7 @@ export default function Register() {
                   className="flex items-center justify-center gap-2"
                 >
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Creating...
+                  Creating Account...
                 </motion.div>
               ) : (
                 "Create Account"
@@ -178,13 +193,13 @@ export default function Register() {
             </button>
           </form>
 
-          <p className="mt-8 text-center text-slate-500 dark:text-slate-400 text-sm font-medium">
+          <p className="mt-8 text-center text-slate-400 text-sm font-medium">
             Already have an account?{" "}
             <button
               onClick={() => navigate("/login")}
-              className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-bold transition-colors"
+              className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors"
             >
-              Log in here.
+              Sign in here.
             </button>
           </p>
 
