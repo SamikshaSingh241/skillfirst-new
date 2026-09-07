@@ -23,6 +23,7 @@ export default function CandidateDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [assessmentData, setAssessmentData] = useState(null);
+  const [targetRole, setTargetRole] = useState("");
   
   // Manual Entry States
   const [manualMode, setManualMode] = useState(false);
@@ -52,6 +53,7 @@ export default function CandidateDashboard() {
     
     const formData = new FormData();
     formData.append("resume", file);
+    formData.append("targetRole", targetRole);
 
     try {
       const response = await fetch("http://localhost:5000/api/ai/analyze-resume", {
@@ -73,6 +75,7 @@ export default function CandidateDashboard() {
       alert("Failed to connect to the server for upload.");
     } finally {
       setIsAnalyzing(false);
+      e.target.value = "";
     }
   };
 
@@ -125,7 +128,7 @@ export default function CandidateDashboard() {
             <button
               onClick={() => setActiveTab("overview")}
               className={`px-6 py-2 rounded-lg font-bold text-sm transition-all ${activeTab === "overview"
-                ? "bg-slate-100 dark:bg-white/10 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                ? "bg-slate-100 dark:bg-white/10 text-emerald-600 dark:text-emerald-400 shadow-sm"
                 : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
                 }`}
             >
@@ -134,7 +137,7 @@ export default function CandidateDashboard() {
             <button
               onClick={() => setActiveTab("assessment")}
               className={`flex items-center gap-2 px-6 py-2 rounded-lg font-bold text-sm transition-all ${activeTab === "assessment"
-                ? "bg-fuchsia-50 dark:bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400 shadow-sm"
+                ? "bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 shadow-sm"
                 : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
                 }`}
             >
@@ -169,9 +172,9 @@ export default function CandidateDashboard() {
                 whileHover={{ y: -4 }}
                 className="neon-card rounded-[2rem] p-8 flex flex-col items-center justify-center relative overflow-hidden"
               >
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-fuchsia-500 to-violet-500" />
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-green-500" />
                 <h3 className="mb-8 text-slate-600 dark:text-slate-400 font-semibold uppercase tracking-wider text-sm flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-violet-500 animate-pulse shadow-[0_0_10px_#8b5cf6]" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_#10b981]" />
                   Skill Score
                 </h3>
                 <ProgressRing percentage={currentUser?.skillScore || 0} />
@@ -182,7 +185,7 @@ export default function CandidateDashboard() {
                 whileHover={{ y: -4 }}
                 className="neon-card rounded-[2rem] p-8 relative overflow-hidden flex flex-col justify-center"
               >
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-500 to-indigo-500" />
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500" />
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-slate-600 dark:text-slate-400 font-semibold uppercase tracking-wider text-sm">
                     Professional Profile
@@ -190,7 +193,7 @@ export default function CandidateDashboard() {
                   {!editing && (
                     <button
                       onClick={() => setEditing(true)}
-                      className="text-violet-600 dark:text-violet-400 hover:text-violet-800 dark:hover:text-white p-2 rounded-full hover:bg-violet-100 dark:hover:bg-violet-500/10 transition-colors"
+                      className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-white p-2 rounded-full hover:bg-emerald-100 dark:hover:bg-emerald-500/10 transition-colors"
                     >
                       <FaEdit className="text-xl" />
                     </button>
@@ -211,13 +214,13 @@ export default function CandidateDashboard() {
                         <input
                           value={experience}
                           onChange={(e) => setExperience(e.target.value)}
-                          className="w-full bg-slate-50 dark:bg-[#05050f] border border-slate-300 dark:border-white/10 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 rounded-xl py-3 px-4 outline-none transition-all text-slate-900 dark:text-white font-medium shadow-inner"
+                          className="w-full bg-slate-50 dark:bg-[#05050f] border border-slate-300 dark:border-white/10 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 rounded-xl py-3 px-4 outline-none transition-all text-slate-900 dark:text-white font-medium shadow-inner"
                           placeholder="e.g., 2 Years - Frontend Dev"
                         />
                       </div>
                       <button
                         onClick={handleSaveProfile}
-                        className="flex items-center justify-center gap-2 w-full btn-revolve text-white font-bold py-3 rounded-xl hover:opacity-90 transition-all shadow-md dark:shadow-[0_0_15px_rgba(139,92,246,0.3)]"
+                        className="flex items-center justify-center gap-2 w-full btn-revolve text-white font-bold py-3 rounded-xl hover:opacity-90 transition-all shadow-md dark:shadow-[0_0_15px_rgba(16,185,129,0.3)]"
                       >
                         <FaSave /> Save Changes
                       </button>
@@ -245,14 +248,14 @@ export default function CandidateDashboard() {
                 whileHover={{ y: -4 }}
                 className="md:col-span-1 neon-card rounded-[2rem] p-8 relative overflow-hidden"
               >
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-500" />
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500" />
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-slate-600 dark:text-slate-400 font-semibold uppercase tracking-wider text-sm">
                     {manualMode ? "Manual Entry" : "Documents"}
                   </h3>
                   <button
                     onClick={() => setManualMode(!manualMode)}
-                    className="text-xs font-bold text-violet-600 dark:text-violet-400 hover:text-violet-700 bg-violet-50 dark:bg-violet-500/10 px-3 py-1 rounded-full transition-colors"
+                    className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 bg-emerald-50 dark:bg-emerald-500/10 px-3 py-1 rounded-full transition-colors"
                   >
                     {manualMode ? "Upload Resume Instead" : "No Resume?"}
                   </button>
@@ -276,7 +279,7 @@ export default function CandidateDashboard() {
                           placeholder="e.g., Senior React Developer"
                           value={jobTitle}
                           onChange={(e) => setJobTitle(e.target.value)}
-                          className="w-full bg-slate-50 dark:bg-[#0b0f19] border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 text-slate-900 dark:text-white"
+                          className="w-full bg-slate-50 dark:bg-[#0b0f19] border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-slate-900 dark:text-white"
                         />
                       </div>
                       <div>
@@ -287,13 +290,13 @@ export default function CandidateDashboard() {
                           placeholder="e.g., 5 years of experience with React, Redux, Node.js. Built scalable microservices..."
                           value={skills}
                           onChange={(e) => setSkills(e.target.value)}
-                          className="w-full bg-slate-50 dark:bg-[#0b0f19] border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 text-slate-900 dark:text-white resize-none"
+                          className="w-full bg-slate-50 dark:bg-[#0b0f19] border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-slate-900 dark:text-white resize-none"
                         />
                       </div>
                       <button
                         type="submit"
                         disabled={isAnalyzing}
-                        className="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 rounded-xl transition-all shadow-md active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
+                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition-all shadow-md active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
                       >
                         {isAnalyzing ? (
                           <>
@@ -312,24 +315,44 @@ export default function CandidateDashboard() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
                     >
-                      <div className="relative border-2 border-dashed border-violet-300 dark:border-violet-500/30 rounded-2xl bg-violet-50 dark:bg-violet-500/5 p-6 text-center hover:bg-violet-100 dark:hover:bg-violet-500/10 hover:border-violet-400 dark:hover:border-violet-500/50 transition-colors cursor-pointer group mb-6">
-                        <input
-                          type="file"
-                          onChange={handleUpload}
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                          disabled={isAnalyzing}
-                        />
-                        <div className="w-12 h-12 rounded-full bg-violet-100 dark:bg-violet-500/10 flex items-center justify-center mx-auto mb-3 text-violet-600 dark:text-violet-400 group-hover:text-fuchsia-600 dark:group-hover:text-fuchsia-400 group-hover:scale-110 transition-transform">
-                          {isAnalyzing ? (
-                            <div className="w-5 h-5 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
-                          ) : (
-                            <FaUpload />
-                          )}
+                      <div className="space-y-4 mb-6">
+                        <div>
+                          <label className="text-xs font-semibold text-slate-500 mb-1 block">Target Role (Required)</label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. Frontend Developer"
+                            value={targetRole}
+                            onChange={(e) => setTargetRole(e.target.value)}
+                            className="w-full bg-slate-50 dark:bg-[#0b0f19] border border-slate-300 dark:border-white/10 rounded-xl px-4 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-slate-900 dark:text-white mb-2"
+                          />
                         </div>
-                        <p className="text-sm font-semibold text-violet-700 dark:text-violet-300">
-                          {isAnalyzing ? "AI is reading..." : "Click to upload"}
-                        </p>
-                        <p className="text-xs text-slate-500 mt-1">PDF Resume (AI Analyzed)</p>
+                        <div className="relative border-2 border-dashed border-emerald-300 dark:border-emerald-500/30 rounded-2xl bg-emerald-50 dark:bg-emerald-500/5 p-6 text-center hover:bg-emerald-100 dark:hover:bg-emerald-500/10 hover:border-emerald-400 dark:hover:border-emerald-500/50 transition-colors cursor-pointer group">
+                          <input
+                            type="file"
+                            onChange={(e) => {
+                                if(!targetRole.trim()) {
+                                    alert("Please enter a Target Role before uploading your resume.");
+                                    e.target.value = "";
+                                    return;
+                                }
+                                handleUpload(e);
+                            }}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            disabled={isAnalyzing}
+                          />
+                          <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-500/10 flex items-center justify-center mx-auto mb-3 text-emerald-600 dark:text-emerald-400 group-hover:text-green-600 dark:group-hover:text-green-400 group-hover:scale-110 transition-transform">
+                            {isAnalyzing ? (
+                              <div className="w-5 h-5 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                            ) : (
+                              <FaUpload />
+                            )}
+                          </div>
+                          <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+                            {isAnalyzing ? "AI is reading..." : "Click to upload"}
+                          </p>
+                          <p className="text-xs text-slate-500 mt-1">PDF Resume (AI Analyzed)</p>
+                        </div>
                       </div>
 
                       {uploadedDocs.length > 0 && (
@@ -360,7 +383,7 @@ export default function CandidateDashboard() {
                 whileHover={{ y: -4 }}
                 className="md:col-span-2 neon-card rounded-[2rem] p-8 relative overflow-hidden flex flex-col"
               >
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-fuchsia-500 to-pink-500" />
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500" />
                 <h3 className="mb-6 text-slate-600 dark:text-slate-400 font-semibold uppercase tracking-wider text-sm">
                   Performance Trend
                 </h3>
@@ -390,10 +413,10 @@ export default function CandidateDashboard() {
                         <Line
                           type="monotone"
                           dataKey="score"
-                          stroke="#d946ef"
+                          stroke="#10b981"
                           strokeWidth={4}
-                          dot={{ r: 6, fill: '#fff', stroke: '#d946ef', strokeWidth: 2 }}
-                          activeDot={{ r: 8, fill: '#d946ef', stroke: '#fff', strokeWidth: 2 }}
+                          dot={{ r: 6, fill: '#fff', stroke: '#10b981', strokeWidth: 2 }}
+                          activeDot={{ r: 8, fill: '#10b981', stroke: '#fff', strokeWidth: 2 }}
                           animationDuration={1500}
                         />
                       </LineChart>
@@ -451,8 +474,8 @@ function ProgressRing({ percentage }) {
         />
         <defs>
           <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#d946ef" />
-            <stop offset="100%" stopColor="#8b5cf6" />
+            <stop offset="0%" stopColor="#10b981" />
+            <stop offset="100%" stopColor="#34d399" />
           </linearGradient>
         </defs>
       </svg>

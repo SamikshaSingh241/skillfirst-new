@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-neon-pink: #d946ef;
-  --color-neon-purple: #8b5cf6;
-  --color-neon-blue: #3b82f6;
-  --color-dark-bg: #05050f;
-  --color-card-bg: #0b0f19;
+  --color-neon-pink: #10b981; /* emerald-500 */
+  --color-neon-purple: #34d399; /* emerald-400 */
+  --color-neon-blue: #059669; /* emerald-600 */
+  --color-dark-bg: #050f05;
+  --color-card-bg: #0a1910;
 }
 
 @custom-variant dark (&:is(.dark, .dark *));
@@ -26,14 +26,14 @@
 }
 
 @utility btn-revolve {
-  background: linear-gradient(270deg, #5e4a8f, #b39db3, #c5c5e8, #b39db3, #5e4a8f);
+  background: linear-gradient(270deg, #065f46, #10b981, #6ee7b7, #10b981, #065f46);
   background-size: 300% 300%;
   animation: gradient-revolve 6s ease infinite;
   color: white;
 }
 
 @utility text-revolve-dark {
-  background: linear-gradient(270deg, #4a3485, #5e4a8f, #7864b3, #5e4a8f, #4a3485);
+  background: linear-gradient(270deg, #064e3b, #065f46, #047857, #065f46, #064e3b);
   background-size: 300% 300%;
   animation: gradient-revolve 6s ease infinite;
   -webkit-background-clip: text;
@@ -44,7 +44,7 @@
 
 /* Global Styles */
 body {
-  @apply bg-slate-50 text-black transition-colors duration-300;
+  @apply bg-slate-900 text-white transition-colors duration-300;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -56,13 +56,36 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-slate-100;
+  @apply bg-slate-800;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 rounded-[10px];
+  @apply bg-slate-600 rounded-[10px];
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400;
+  @apply bg-slate-500;
+}
+
+.neon-card {
+  background-color: #050f05;
+  border: 1px solid rgba(16, 185, 129, 0.2); /* Emerald border */
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
+}
+.dark .neon-card {
+  background-color: #050f05;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
+}
+
+.neon-text-gradient {
+  background: linear-gradient(to right, #34d399, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.neon-bg-gradient {
+  background: linear-gradient(to right, #34d399, #10b981);
 }
