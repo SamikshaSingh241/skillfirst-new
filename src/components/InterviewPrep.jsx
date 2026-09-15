@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaComments, FaLightbulb, FaMicrophone, FaStopCircle, FaPaperPlane } from "react-icons/fa";
+import { API_BASE_URL } from "../config/api";
 
 export default function InterviewPrep({ questions }) {
   const [activeQuestion, setActiveQuestion] = useState(null);
@@ -72,7 +73,7 @@ export default function InterviewPrep({ questions }) {
     setEvaluating(true);
     
     try {
-      const response = await fetch("http://localhost:5000/api/ai/evaluate-answer", {
+      const response = await fetch(`${API_BASE_URL}/api/ai/evaluate-answer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: questionText, answer: transcript }),

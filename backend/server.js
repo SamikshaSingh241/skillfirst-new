@@ -14,10 +14,18 @@ app.use(express.json());
 
 // Routes Imports
 const aiRoutes = require('./routes/ai');
+const jobRoutes = require('./routes/jobs');
+const applicationRoutes = require('./routes/applications');
+
+app.get('/', (req, res) => res.json({ status: 'ok', message: 'SkillFirst Backend API is active', version: '2.0.0' }));
+app.get('/health', (req, res) => res.json({ status: 'healthy', uptime: process.uptime() }));
+
 app.use('/api/ai', aiRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/applications', applicationRoutes);
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/skillfirst', {
+mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://localhost:27017/skillfirst', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })

@@ -1,4 +1,5 @@
 import { createContext, useEffect, useMemo, useState } from "react";
+import { API_BASE_URL } from "../config/api";
 
 export const AuthContext = createContext(null);
 
@@ -12,7 +13,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Fetch users from backend
-    fetch('http://localhost:5000/api/users')
+    fetch(`${API_BASE_URL}/api/users`)
       .then(res => res.json())
       .then(data => {
         setUsers(data);
@@ -41,7 +42,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -64,15 +65,13 @@ export const AuthProvider = ({ children }) => {
       return user;
     } catch (err) {
       console.error("Login error:", err);
-      // Return null to signify failure or throw an error based on the UI expectation.
-      // We will throw the error so the UI can catch it and display the message.
       throw err;
     }
   };
 
   const register = async (userData) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -93,7 +92,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem(TOKEN_KEY, token);
 
       // Re-fetch users so the local list is updated if needed
-      fetch('http://localhost:5000/api/users')
+      fetch(`${API_BASE_URL}/api/users`)
         .then(res => res.json())
         .then(data => setUsers(data))
         .catch(console.error);
@@ -119,7 +118,7 @@ export const AuthProvider = ({ children }) => {
     // 2. Sync to Backend if there is an ID
     if (updatedUser._id) {
       try {
-        const response = await fetch(`http://localhost:5000/api/users/${updatedUser._id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/users/${updatedUser._id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -131,7 +130,7 @@ export const AuthProvider = ({ children }) => {
           console.error("Failed to sync user data to backend");
         } else {
           // Re-fetch global user list so recruiters immediately see the new scores
-          fetch('http://localhost:5000/api/users')
+          fetch(`${API_BASE_URL}/api/users`)
             .then(res => res.json())
             .then(data => setUsers(data))
             .catch(console.error);

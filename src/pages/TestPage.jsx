@@ -2,8 +2,9 @@ import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCheckCircle, FaTimesCircle, FaTrophy, FaArrowRight, FaArrowLeft } from "react-icons/fa";
+import { API_BASE_URL } from "../config/api";
 
-export default function TestPage({ customQuestions }) {
+export default function TestPage({ customQuestions, applicationId }) {
   const { currentUser, updateUser } = useContext(AuthContext);
 
   const fallbackQuestions = [
@@ -72,6 +73,14 @@ export default function TestPage({ customQuestions }) {
           percentage,
         ],
       });
+    }
+
+    if (applicationId) {
+      fetch(`${API_BASE_URL}/api/applications/${applicationId}/score`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ score: percentage }),
+      }).catch(err => console.error("Error updating application score:", err));
     }
 
     setTestResult({ score, percentage, details });
